@@ -1,0 +1,22 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 6K of event 'cpu_core/cycles/u'
+# Event count (approx.): 2502508487
+#
+# Overhead  Command  Shared Object         Symbol
+# ........  .......  ....................  ............................
+#
+    47.77%  bench    bench                 [.] main_g.constprop.0
+    19.40%  bench    bench                 [.] parse_case_g.constprop.0
+    14.70%  bench    bench                 [.] time_from_calendar_g4
+     7.28%  bench    bench                 [.] time_detail_decimal_g11
+     6.04%  bench    bench                 [.] time_to_calendar_g4
+     4.76%  bench    bench                 [.] gs_memcpy
+
+
+#
+# (Tip: When collecting LBR backtraces use --stitch-lbr to handle more than 32 deep entries: perf record --call-graph lbr ; perf report --stitch-lbr)
+#

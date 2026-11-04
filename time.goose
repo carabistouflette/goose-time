@@ -82,8 +82,9 @@ fn from_calendar(value: Calendar) -> Timestamp, Error {
        value.second < 0 || value.second > 59 || value.nanosecond < 0 ||
        value.nanosecond >= NANOSECONDS_PER_SECOND { return Timestamp { .. }, Error.Invalid; }
     let y = value.year - 1;
-    var days = 365 * y + y / 4 - y / 100 + y / 400 + value.day - 1;
-    for month in 1..value.month { days += time_detail::month_days(value.year, month); }
+    var days = 365 * y + y / 4 - y / 100 + y / 400 + value.day - 1 +
+        time_detail::MONTH_START[value.month - 1];
+    if value.month > 2 && time_detail::leap(value.year) { days += 1; }
     return Timestamp { (days - 719162) * 86400 + value.hour * 3600 + value.minute * 60 + value.second,
                        value.nanosecond }, Error.None;
 }

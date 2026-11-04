@@ -48,6 +48,9 @@ fn shift(value: time::Timestamp, delta: time::Duration, subtracting: bool) -> ti
 
 fn leap(year: i64) -> bool { year % 4 == 0 && (year % 100 != 0 || year % 400 == 0) }
 
+// Prefix day counts in a common year; callers validate month before indexing.
+const MONTH_START: i64[12] = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+
 fn month_days(year: i64, month: i64) -> i64 {
     if month == 2 { return if leap(year) { 29 } else { 28 }; }
     if month == 4 || month == 6 || month == 9 || month == 11 { return 30; }
