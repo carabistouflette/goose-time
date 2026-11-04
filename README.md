@@ -2,7 +2,7 @@
 
 Small, pure time arithmetic and bounded RFC 3339 parsing/formatting for the
 [Goose programming language](https://github.com/aardappel/goose). Apache-2.0.
-Experimental interface; no tagged release or compatibility promise before 1.0.
+Experimental 0.1.0 interface; no compatibility promise before 1.0.
 Validated locally on Linux x86-64; other platforms are not yet validated.
 
 Distinct durations, monotonic samples and Unix timestamps, checked integer
@@ -17,6 +17,8 @@ headers. `make setup` builds the full upstream revision in GOOSE_REVISION with
 optional graphics/audio disabled. GCC and Clang are needed for full validation.
 
 ```sh
+git clone https://github.com/carabistouflette/goose-time.git
+cd goose-time
 make setup
 make check test test-debug differential test-portable fuzz test-calendar
 .toolchain/goose/build/goose run examples/timestamps.goose
@@ -47,6 +49,12 @@ offsets and up to nine fractional digits; rejects leap seconds, year zero,
 unknown-local-offset `-00:00`, and trailing bytes. Formatting normalizes to UTC
 and removes trailing fractional zeroes. It preserves instants, not source spelling
 or source offset metadata. Calendar arithmetic excludes leap seconds.
+
+For a reproducible Git import, the reviewed implementation can be pinned as
+`import time from "carabistouflette/goose-time@bcbe9ea24990467fbe3aa8f5b122212aa539d5c0";`.
+That implementation commit is unchanged in the experimental
+[release](https://github.com/carabistouflette/goose-time/releases/tag/v0.1.0);
+subsequent preparation changes update documentation and validation targets.
 
 See [contribution standards](CONTRIBUTING.md), [security](SECURITY.md),
 [benchmark method](bench/README.md), and [validation evidence](docs/VALIDATION.md).

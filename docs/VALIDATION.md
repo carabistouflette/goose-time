@@ -7,10 +7,13 @@ changes after that commit do not change either production source file.
 Validated locally on Linux x86-64 with Goose revision
 `eadca409f68210893f366e60d0c2f0dc29a339be` (runtime `3025e5810379`),
 GCC 16.2.1 20260810 and Clang 23.1.4. The compiler checkout's full identity was
-verified against GOOSE_REVISION. An existing exact-pin compiler was reused;
-fresh compiler bootstrap and hosted GitHub Actions execution were not performed
-for this local, unpublished repository. CI pins the same source revision and
-runs the validation targets without timing thresholds.
+verified against GOOSE_REVISION. Initial local validation reused an existing
+exact-pin compiler and did not include fresh compiler bootstrap or hosted CI.
+The maintained [CI workflow](https://github.com/carabistouflette/goose-time/actions/workflows/ci.yml)
+bootstraps that exact revision and runs the validation targets without timing
+thresholds. Publication requires successful CI on the exact release commit;
+immutable publication evidence is linked in the
+[release notes](https://github.com/carabistouflette/goose-time/releases/tag/v0.1.0).
 
 ## Performed checks
 

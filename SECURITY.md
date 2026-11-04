@@ -1,9 +1,9 @@
 # Security
 
-For this unpublished source, report suspected vulnerabilities privately to the
-repository owner. After publication use GitHub private vulnerability reporting
-when enabled. Include affected commit, exact compiler/platform, and a minimal
-reproducer; avoid public exploit details before a fix is available.
+Report suspected vulnerabilities through
+[GitHub private vulnerability reporting](https://github.com/carabistouflette/goose-time/security/advisories/new).
+Include the affected commit, exact compiler/platform, and a minimal reproducer;
+avoid public exploit details before a fix is available.
 
 All documented timestamp/calendar operations validate public fields. Arithmetic
 checks representability before operations that can overflow in release builds.
