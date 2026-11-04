@@ -65,3 +65,6 @@ Error. Goose lifetime rules prohibit inputs borrowing a mutating output builder.
 
 See [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339), sections 4.3, 5.6 and 5.7.
 No RFC source or third-party implementation is vendored.
+
+`time_detail` is unsupported implementation detail, not part of this interface.
+Its helpers require validated inputs and must not be called by consumers.
