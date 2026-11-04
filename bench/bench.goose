@@ -56,7 +56,7 @@ fn main() {
         out.clear();
         let value = time::Timestamp { 1700000000 + i % 86400, i % 1000000000 };
         assert(time::append_rfc3339(out, value) == time::Error.None);
-        checksum += out.len + out[out.len - 2];
+        for byte in out { checksum += byte; }
     }
     elapsed = clock_ns() - start;
     print("format_reused,", iterations, ",", elapsed, ",", checksum);
@@ -66,7 +66,7 @@ fn main() {
         var fresh: u8[>..] = [];
         let value = time::Timestamp { 1700000000 + i % 86400, i % 1000000000 };
         assert(time::append_rfc3339(fresh, value) == time::Error.None);
-        checksum += fresh.len + fresh[fresh.len - 2];
+        for byte in fresh { checksum += byte; }
     }
     elapsed = clock_ns() - start;
     print("format_fresh,", iterations, ",", elapsed, ",", checksum);

@@ -26,6 +26,8 @@ def main():
     if not 1 <= args.iterations <= 100000000 or not 1 <= args.runs <= 100:
         parser.error('iterations must be 1..100000000; runs 1..100')
     output = args.output.resolve()
+    if output.exists() and any(output.iterdir()):
+        parser.error("--output must be an empty or new directory; refusing to mix samples")
     output.mkdir(parents=True, exist_ok=True)
     binary = ROOT / '.build' / 'bench-measure'
     binary.parent.mkdir(exist_ok=True)
