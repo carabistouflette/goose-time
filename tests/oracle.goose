@@ -19,13 +19,37 @@ fn emit_duration(value: time::Duration, error: time::Error) {
     assert(error == time::Error.None);
     print(value.nanoseconds);
 }
+fn nibble(byte: u8) -> u8 {
+    if byte >= '0' && byte <= '9' { return byte - '0'; }
+    assert(byte >= 'a' && byte <= 'f');
+    byte - 'a' + 10
+}
+fn decode_hex(text: const u8[:]) -> u8[>..] {
+    assert(text.len % 2 == 0);
+    var out: u8[>..] = [];
+    var at = 0;
+    while at < text.len {
+        out.push(nibble(text[at]) * 16 + nibble(text[at + 1]));
+        at += 2;
+    }
+    out
+}
 fn main() {
     while true {
         var line: u8[>..] = [];
         if !read_line(line) { break; }
         let fields = split(line, '\t');
         assert(fields.len >= 2);
-        if fields[0] == "P" {
+        if fields[0] == "Q" {
+            assert(fields.len == 2);
+            let source = decode_hex(fields[1]);
+            let value, error = time::parse_rfc3339(source);
+            if error == time::Error.None { print(value.seconds, "\t", value.nanoseconds); }
+            else {
+                assert(value.seconds == 0 && value.nanoseconds == 0);
+                print("E");
+            }
+        } else if fields[0] == "P" {
             assert(fields.len == 2);
             let stamp, error = time::parse_rfc3339(fields[1]);
             assert(error == time::Error.None);

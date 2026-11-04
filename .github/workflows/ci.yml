@@ -17,5 +17,5 @@ jobs:
           path: .toolchain
           key: goose-${{ runner.os }}-${{ hashFiles('GOOSE_REVISION', 'scripts/setup-goose.sh') }}
       - run: make setup
-      - run: make check test test-debug differential test-portable
+      - run: make check test test-debug differential test-portable fuzz test-calendar
       - run: make bench BENCH_ITERATIONS=100

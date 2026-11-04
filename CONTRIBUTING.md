@@ -10,7 +10,7 @@ before 1.0. Tag only independently reviewed releases.
 
 Behavior changes need meaningful public-interface regressions for malformed
 input and range edges. Run `make format`, `make check test test-debug`,
-`make differential`, `make test-portable`, and `git diff --check`. Request
+`make differential fuzz`, `make test-portable`, and `git diff --check`. Request
 independent reviews, fix actionable findings, and keep CI passing. Compiler
 changes require a reviewed full upstream commit and full validation. Never
 commit credentials, generated compiler output, or private coordination notes.

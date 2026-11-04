@@ -2,7 +2,7 @@ GOOSE ?= .toolchain/goose/build/goose
 BENCH_ITERATIONS ?= 100000
 BENCH_CC ?= gcc
 
-.PHONY: setup format check test test-debug test-portable differential bench
+.PHONY: setup format check test test-debug test-portable differential fuzz test-calendar bench
 setup:
 	./scripts/setup-goose.sh
 format:
@@ -41,9 +41,19 @@ test-portable:
 	./.build/core-clang
 	"$(GOOSE)" build tests/formatting.goose --cc clang --debug --standalone -o .build/formatting-clang
 	./.build/formatting-clang
+	python3 tests/differential.py --goose "$(GOOSE)" --cc gcc --standalone --mode build-debug
+	python3 tests/differential.py --goose "$(GOOSE)" --cc clang --standalone --mode build-debug
 differential:
 	python3 tests/differential.py --goose "$(GOOSE)"
+fuzz:
+	python3 tests/parser_fuzz.py --goose "$(GOOSE)" --cc clang --standalone
 bench:
 	mkdir -p .build
 	"$(GOOSE)" build bench/bench.goose --cc "$(BENCH_CC)" -O2 -o .build/bench
 	./.build/bench $(BENCH_ITERATIONS)
+test-calendar:
+	mkdir -p .build
+	"$(GOOSE)" build tests/calendar.goose --cc gcc --debug --standalone -o .build/calendar-gcc
+	./.build/calendar-gcc
+	"$(GOOSE)" build tests/calendar.goose --cc clang --debug --standalone -o .build/calendar-clang
+	./.build/calendar-clang

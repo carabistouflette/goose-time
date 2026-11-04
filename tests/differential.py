@@ -121,6 +121,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--goose", default=os.environ.get("GOOSE", str(ROOT / ".toolchain/goose/build/goose")))
     parser.add_argument("--cases", type=int, default=2048)
+    parser.add_argument("--cc", help="C compiler for build modes")
+    parser.add_argument("--standalone", action="store_true", help="Standalone executable in build modes")
     parser.add_argument("--mode", action="append", choices=("run", "debug", "build", "build-debug"))
     args = parser.parse_args()
     if not 1 <= args.cases <= 100000:
@@ -143,6 +145,10 @@ def main():
             command = [goose, "build", "tests/oracle.goose", "-o", str(executable)]
             if mode == "build-debug":
                 command.append("--debug")
+            if args.cc:
+                command.extend(("--cc", args.cc))
+            if args.standalone:
+                command.append("--standalone")
             subprocess.run(command, cwd=ROOT, check=True, timeout=120)
             command = [str(executable)]
         result = subprocess.run(command, input=inputs, text=True, capture_output=True,

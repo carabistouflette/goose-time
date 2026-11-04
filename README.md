@@ -17,7 +17,7 @@ optional graphics/audio disabled. GCC and Clang are needed for full validation.
 
 ```sh
 make setup
-make check test test-debug differential test-portable
+make check test test-debug differential test-portable fuzz
 .toolchain/goose/build/goose run examples/timestamps.goose
 ```
 
