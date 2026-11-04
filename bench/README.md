@@ -22,3 +22,6 @@ Retain all batches, check distributions and checksums, and profile before adding
 an optimization. These are microbenchmarks of this interface, not comparative
 rankings or end-to-end application performance claims. Published samples identify
 actual source hashes even when benchmark tooling was uncommitted during capture.
+
+See [retained month-prefix samples](results/month-prefix/README.md) for the
+initial profiled optimization and all unchanged-path results.

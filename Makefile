@@ -44,7 +44,7 @@ test-portable:
 	python3 tests/differential.py --goose "$(GOOSE)" --cc gcc --standalone --mode build-debug
 	python3 tests/differential.py --goose "$(GOOSE)" --cc clang --standalone --mode build-debug
 differential:
-	python3 tests/differential.py --goose "$(GOOSE)"
+	python3 tests/differential.py --goose "$(GOOSE)" --mode run --mode debug --mode build --mode build-debug
 fuzz:
 	python3 tests/parser_fuzz.py --goose "$(GOOSE)" --cc clang --standalone
 bench:
