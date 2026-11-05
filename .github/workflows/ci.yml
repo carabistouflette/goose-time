@@ -86,6 +86,11 @@ jobs:
             echo 'Expected GNU GCC for GCC_CC' >&2
             exit 1
           fi
+          gcc_path="$(command -v "$GCC_CC")"
+          case "$gcc_path" in /*) ;; *) exit 1 ;; esac
+          test -x "$gcc_path"
+          printf 'GCC_CC=%s\n' "$gcc_path" >> "$GITHUB_ENV"
+          printf 'Resolved GNU GCC: %s\n' "$gcc_path"
           cmake --version
           python3 --version
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0

@@ -19,7 +19,8 @@ Requires Git, Make, Python 3, CMake 3.27+, C/C++20 compilers and libc developmen
 headers. `make setup` builds the full upstream revision in GOOSE_REVISION with
 optional graphics/audio disabled. GCC and Clang are needed for full validation.
 `GCC_CC` and `CLANG_CC` select the standalone test compilers (defaults: `gcc`
-and `clang`). macOS CI uses `gcc-15` and `/usr/bin/clang`; `CC`, `CXX` and
+and `clang`). macOS CI resolves `gcc-15` to an absolute path and uses
+`/usr/bin/clang`; `CC`, `CXX` and
 `GOOSE_CC` explicitly select Apple Clang for compiler bootstrap and default
 generated executables. `BENCH_CC` selects the benchmark compiler separately.
 
