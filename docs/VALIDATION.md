@@ -27,11 +27,10 @@ Both jobs run contract and consumer-formatting regressions, normal/debug
 runner and executable modes, Python differential and byte-mutation oracles,
 GCC/Clang standalone debug tests, the complete Gregorian calendar enumeration,
 and a benchmark correctness smoke. They use the same inputs and case counts;
-there is no emulation or timing threshold in the workflow. Hosted ARM64 evidence
-for this change is pending; actual outcomes and tool versions must be checked in
-the Actions logs. Immutable run/job links and results must be recorded before
-claiming completed ARM64 validation. A configured runner alone is not evidence
-of a passed validation suite.
+there is no emulation or timing threshold in the workflow. The first hosted runs
+passed on both architectures; [the recorded evidence](NATIVE-LINUX-2026-11-05.md)
+links all four exact jobs and identifies their source, toolchain and workloads.
+A configured runner alone is not evidence of a passed validation suite.
 
 This CI addition preserves the production sources, API and compiler pin from
 v0.1.0. It does not move that release tag or extend the historical local x86-64
