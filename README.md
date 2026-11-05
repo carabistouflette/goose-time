@@ -2,7 +2,8 @@
 
 Small, pure time arithmetic and bounded RFC 3339 parsing/formatting for the
 [Goose programming language](https://github.com/aardappel/goose). Apache-2.0.
-Experimental 0.1.0 interface; no compatibility promise before 1.0.
+Experimental 0.1.1 maintenance release; runtime and public interface unchanged
+from 0.1.0. No compatibility promise before 1.0.
 Validated locally on Linux x86-64 and in maintained CI on native Linux x86-64,
 Linux ARM64 and macOS ARM64; see the recorded [Linux](docs/NATIVE-LINUX-2026-11-05.md)
 and [macOS](docs/NATIVE-MACOS-2026-11-05.md) results. Other platforms are not yet
@@ -62,8 +63,8 @@ or source offset metadata. Calendar arithmetic excludes leap seconds.
 For a reproducible Git import, the reviewed implementation can be pinned as
 `import time from "carabistouflette/goose-time@bcbe9ea24990467fbe3aa8f5b122212aa539d5c0";`.
 That implementation commit is unchanged in the experimental
-[release](https://github.com/carabistouflette/goose-time/releases/tag/v0.1.0);
-subsequent preparation changes update documentation and validation targets.
+[release](https://github.com/carabistouflette/goose-time/releases/tag/v0.1.1);
+maintenance changes update documentation, CI and test compiler selection.
 
 See [contribution standards](CONTRIBUTING.md), [security](SECURITY.md),
 [benchmark method](bench/README.md), and [validation evidence](docs/VALIDATION.md).
