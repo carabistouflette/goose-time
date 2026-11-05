@@ -1,6 +1,8 @@
 GOOSE ?= .toolchain/goose/build/goose
 BENCH_ITERATIONS ?= 100000
 BENCH_CC ?= gcc
+GCC_CC ?= gcc
+CLANG_CC ?= clang
 
 .PHONY: setup format check test test-debug test-portable differential fuzz test-calendar bench
 setup:
@@ -33,27 +35,27 @@ test-debug:
 	./.build/formatting-debug
 test-portable:
 	mkdir -p .build
-	"$(GOOSE)" build tests/core.goose --cc gcc --debug --standalone -o .build/core-gcc
+	"$(GOOSE)" build tests/core.goose --cc "$(GCC_CC)" --debug --standalone -o .build/core-gcc
 	./.build/core-gcc
-	"$(GOOSE)" build tests/formatting.goose --cc gcc --debug --standalone -o .build/formatting-gcc
+	"$(GOOSE)" build tests/formatting.goose --cc "$(GCC_CC)" --debug --standalone -o .build/formatting-gcc
 	./.build/formatting-gcc
-	"$(GOOSE)" build tests/core.goose --cc clang --debug --standalone -o .build/core-clang
+	"$(GOOSE)" build tests/core.goose --cc "$(CLANG_CC)" --debug --standalone -o .build/core-clang
 	./.build/core-clang
-	"$(GOOSE)" build tests/formatting.goose --cc clang --debug --standalone -o .build/formatting-clang
+	"$(GOOSE)" build tests/formatting.goose --cc "$(CLANG_CC)" --debug --standalone -o .build/formatting-clang
 	./.build/formatting-clang
-	python3 tests/differential.py --goose "$(GOOSE)" --cc gcc --standalone --mode build-debug
-	python3 tests/differential.py --goose "$(GOOSE)" --cc clang --standalone --mode build-debug
+	python3 tests/differential.py --goose "$(GOOSE)" --cc "$(GCC_CC)" --standalone --mode build-debug
+	python3 tests/differential.py --goose "$(GOOSE)" --cc "$(CLANG_CC)" --standalone --mode build-debug
 differential:
 	python3 tests/differential.py --goose "$(GOOSE)" --mode run --mode debug --mode build --mode build-debug
 fuzz:
-	python3 tests/parser_fuzz.py --goose "$(GOOSE)" --cc clang --standalone
+	python3 tests/parser_fuzz.py --goose "$(GOOSE)" --cc "$(CLANG_CC)" --standalone
 bench:
 	mkdir -p .build
 	"$(GOOSE)" build bench/bench.goose --cc "$(BENCH_CC)" -O2 -o .build/bench
 	./.build/bench $(BENCH_ITERATIONS)
 test-calendar:
 	mkdir -p .build
-	"$(GOOSE)" build tests/calendar.goose --cc gcc --debug --standalone -o .build/calendar-gcc
+	"$(GOOSE)" build tests/calendar.goose --cc "$(GCC_CC)" --debug --standalone -o .build/calendar-gcc
 	./.build/calendar-gcc
-	"$(GOOSE)" build tests/calendar.goose --cc clang --debug --standalone -o .build/calendar-clang
+	"$(GOOSE)" build tests/calendar.goose --cc "$(CLANG_CC)" --debug --standalone -o .build/calendar-clang
 	./.build/calendar-clang
