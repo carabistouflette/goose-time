@@ -3,8 +3,9 @@
 ## Unreleased
 
 - Add native macOS ARM64 CI with explicit GNU GCC/Apple Clang compiler selection
-  and the existing full validation workload. Hosted macOS results are pending;
-  production sources, API, compiler pin and release tags are unchanged.
+  and the existing full validation workload. Record the passed hosted jobs and
+  their compiler/platform provenance; production sources, API, compiler pin and
+  release tags are unchanged.
 
 - Run the full maintained validation suite on native Linux ARM64 alongside
   x86-64, with architecture checks, compiler provenance and architecture-specific

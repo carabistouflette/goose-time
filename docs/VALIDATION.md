@@ -39,16 +39,16 @@ performance ranking or Windows/macOS validation claim.
 
 ## Native macOS ARM64 CI
 
-Native macOS ARM64 CI is configured separately; its hosted evidence is pending.
-That job checks Darwin
-and `arm64`, records macOS/Xcode/SDK/compiler versions, and uses the same full
+Native macOS ARM64 CI passed in both initial hosted runs; the
+[recorded macOS evidence](NATIVE-MACOS-2026-11-05.md) links the exact jobs,
+checkout identities, observed tools and results. That job checks Darwin and
+`arm64`, records macOS/Xcode/SDK/compiler versions, and uses the same full
 test targets and input counts as Linux. Standalone compiler selection is explicit:
 `GCC_CC` is the resolved absolute path of `gcc-15` and
 `CLANG_CC=/usr/bin/clang`; the GCC predefines check rejects a Clang alias.
 Compiler bootstrap, default generated executables and benchmark
-smoke use Apple Clang. Exact successful run/job links and observed results must
-be recorded before claiming completed macOS validation. No production sources,
-API or compiler pin are changed, and the v0.1.0 tag remains unchanged.
+smoke use Apple Clang. No production sources, API or compiler pin are changed,
+and the v0.1.0 tag remains unchanged.
 
 ## Performed checks
 
