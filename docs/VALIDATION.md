@@ -12,8 +12,11 @@ exact-pin compiler and did not include fresh compiler bootstrap or hosted CI.
 The maintained [CI workflow](https://github.com/carabistouflette/goose-time/actions/workflows/ci.yml)
 bootstraps that exact revision and runs the validation targets without timing
 thresholds. Publication requires successful CI on the exact release commit;
-immutable publication evidence is linked in the
+initial v0.1.0 publication evidence is linked in its
 [release notes](https://github.com/carabistouflette/goose-time/releases/tag/v0.1.0).
+Later releases record their own exact candidate CI and archive verification in
+their release notes; the platform records below retain their original source
+identities.
 
 ## Native Linux CI
 
