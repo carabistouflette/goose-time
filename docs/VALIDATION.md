@@ -34,13 +34,13 @@ A configured runner alone is not evidence of a passed validation suite.
 
 This CI addition preserves the production sources, API and compiler pin from
 v0.1.0. It does not move that release tag or extend the historical local x86-64
-measurements below to ARM64. No cross-architecture performance ranking or
-Windows/macOS validation is claimed.
+measurements below to ARM64. Those Linux runs make no cross-architecture
+performance ranking or Windows/macOS validation claim.
 
-## Performed checks
+## Native macOS ARM64 CI
 
-The historical checks below describe Linux evidence. Native macOS ARM64 CI is
-configured separately; its hosted evidence is pending. That job checks Darwin
+Native macOS ARM64 CI is configured separately; its hosted evidence is pending.
+That job checks Darwin
 and `arm64`, records macOS/Xcode/SDK/compiler versions, and uses the same full
 test targets and input counts as Linux. Standalone compiler selection is explicit:
 `GCC_CC` is the resolved absolute path of `gcc-15` and
@@ -49,6 +49,10 @@ Compiler bootstrap, default generated executables and benchmark
 smoke use Apple Clang. Exact successful run/job links and observed results must
 be recorded before claiming completed macOS validation. No production sources,
 API or compiler pin are changed, and the v0.1.0 tag remains unchanged.
+
+## Performed checks
+
+The historical checks below describe Linux evidence.
 
 - Format/type checks and example execution.
 - Public-interface regression and hostile consumer-formatting tests in normal
