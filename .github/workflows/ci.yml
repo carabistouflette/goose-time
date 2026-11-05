@@ -51,3 +51,51 @@ jobs:
           .toolchain/goose/build/goose version
       - run: make check test test-debug differential test-portable fuzz test-calendar
       - run: make bench BENCH_ITERATIONS=100
+  macos-arm64:
+    runs-on: macos-15
+    timeout-minutes: 30
+    env:
+      CC: /usr/bin/clang
+      CXX: /usr/bin/clang++
+      GOOSE_CC: /usr/bin/clang
+      GCC_CC: gcc-15
+      CLANG_CC: /usr/bin/clang
+      BENCH_CC: /usr/bin/clang
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Verify native macOS architecture and record tools
+        run: |
+          test "$(uname -s)" = Darwin
+          test "$(uname -m)" = arm64
+          uname -a
+          sw_vers
+          sysctl -n machdep.cpu.brand_string
+          xcodebuild -version
+          xcrun --show-sdk-version
+          "$CC" --version
+          "$CXX" --version
+          "$GCC_CC" --version
+          "$GCC_CC" -dumpmachine
+          "$CLANG_CC" --version
+          "$CLANG_CC" -dumpmachine
+          "$GCC_CC" -dM -E -x c /dev/null > "$RUNNER_TEMP/goose-time-gcc-macros"
+          grep -q '^#define __GNUC__ ' "$RUNNER_TEMP/goose-time-gcc-macros"
+          if grep -q '^#define __clang__ ' "$RUNNER_TEMP/goose-time-gcc-macros"; then
+            echo 'Expected GNU GCC for GCC_CC' >&2
+            exit 1
+          fi
+          cmake --version
+          python3 --version
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .toolchain
+          key: goose-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('GOOSE_REVISION', 'scripts/setup-goose.sh') }}
+      - run: make setup
+      - name: Verify compiler source identity and record runtime
+        run: |
+          test "$(git -C .toolchain/goose rev-parse HEAD)" = "$(cat GOOSE_REVISION)"
+          .toolchain/goose/build/goose version
+      - run: make check test test-debug differential test-portable fuzz test-calendar
+      - run: make bench BENCH_ITERATIONS=100

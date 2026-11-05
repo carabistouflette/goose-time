@@ -39,6 +39,16 @@ Windows/macOS validation is claimed.
 
 ## Performed checks
 
+The historical checks below describe Linux evidence. Native macOS ARM64 CI is
+configured separately; its hosted evidence is pending. That job checks Darwin
+and `arm64`, records macOS/Xcode/SDK/compiler versions, and uses the same full
+test targets and input counts as Linux. Standalone compiler selection is explicit:
+`GCC_CC=gcc-15` and `CLANG_CC=/usr/bin/clang`; the GCC predefines check rejects
+a Clang alias. Compiler bootstrap, default generated executables and benchmark
+smoke use Apple Clang. Exact successful run/job links and observed results must
+be recorded before claiming completed macOS validation. No production sources,
+API or compiler pin are changed, and the v0.1.0 tag remains unchanged.
+
 - Format/type checks and example execution.
 - Public-interface regression and hostile consumer-formatting tests in normal
   and debug runner/executable modes. Checks include i64 endpoints, subtraction

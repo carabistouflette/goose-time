@@ -5,7 +5,8 @@ Small, pure time arithmetic and bounded RFC 3339 parsing/formatting for the
 Experimental 0.1.0 interface; no compatibility promise before 1.0.
 Validated locally on Linux x86-64 and in maintained CI on native Linux x86-64
 and ARM64; see the [recorded hosted results](docs/NATIVE-LINUX-2026-11-05.md).
-Other platforms are not yet validated.
+macOS ARM64 CI is configured with explicit GNU GCC and Apple Clang selection;
+hosted macOS evidence is pending. Other platforms are not yet validated.
 
 Distinct durations, monotonic samples and Unix timestamps, checked integer
 arithmetic, nanosecond precision, and Gregorian UTC dates in years 0001..9999.
@@ -17,6 +18,10 @@ sample clocks; the same functions accept fixed values in tests.
 Requires Git, Make, Python 3, CMake 3.27+, C/C++20 compilers and libc development
 headers. `make setup` builds the full upstream revision in GOOSE_REVISION with
 optional graphics/audio disabled. GCC and Clang are needed for full validation.
+`GCC_CC` and `CLANG_CC` select the standalone test compilers (defaults: `gcc`
+and `clang`). macOS CI uses `gcc-15` and `/usr/bin/clang`; `CC`, `CXX` and
+`GOOSE_CC` explicitly select Apple Clang for compiler bootstrap and default
+generated executables. `BENCH_CC` selects the benchmark compiler separately.
 
 ```sh
 git clone https://github.com/carabistouflette/goose-time.git
