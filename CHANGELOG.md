@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Run the full maintained validation suite on native Linux ARM64 alongside
+  x86-64, with architecture checks, compiler provenance and architecture-specific
+  caches. Production sources, API, compiler pin and the v0.1.0 tag are unchanged.
+
 ## 0.1.0 — experimental
 
 - Distinct signed-nanosecond Duration and monotonic Instant values; checked unit

@@ -15,6 +15,27 @@ thresholds. Publication requires successful CI on the exact release commit;
 immutable publication evidence is linked in the
 [release notes](https://github.com/carabistouflette/goose-time/releases/tag/v0.1.0).
 
+## Native Linux CI
+
+The maintained workflow runs the same full validation targets on
+`ubuntu-24.04` (x86-64) and `ubuntu-24.04-arm` (ARM64). Each job checks its actual
+Linux architecture and 64-bit process environment, records OS/CPU/compiler tools,
+bootstraps the pinned compiler, and verifies the full compiler checkout identity.
+Compiler caches include OS and architecture to keep native executables separate.
+
+Both jobs run contract and consumer-formatting regressions, normal/debug
+runner and executable modes, Python differential and byte-mutation oracles,
+GCC/Clang standalone debug tests, the complete Gregorian calendar enumeration,
+and a benchmark correctness smoke. They use the same inputs and case counts;
+there is no emulation or timing threshold in the workflow. Actual hosted outcomes
+and tool versions are recorded in the linked Actions runs. A configured runner
+alone is not evidence of a passed validation suite.
+
+This CI addition preserves the production sources, API and compiler pin from
+v0.1.0. It does not move that release tag or extend the historical local x86-64
+measurements below to ARM64. No cross-architecture performance ranking or
+Windows/macOS validation is claimed.
+
 ## Performed checks
 
 - Format/type checks and example execution.
@@ -66,4 +87,5 @@ The [measured optimization](../bench/results/month-prefix/README.md) retains all
 raw batches, source hashes, platform/compiler provenance, and the original
 sampling profile. Measurements are not latency guarantees. No exhaustive proof
 of arbitrary malformed input, allocator failure recovery, or validation on
-Windows/macOS/other architectures is claimed. This core contains no native code.
+Windows/macOS/architectures outside the native Linux CI matrix is claimed. This
+core contains no native code.

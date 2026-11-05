@@ -3,7 +3,9 @@
 Small, pure time arithmetic and bounded RFC 3339 parsing/formatting for the
 [Goose programming language](https://github.com/aardappel/goose). Apache-2.0.
 Experimental 0.1.0 interface; no compatibility promise before 1.0.
-Validated locally on Linux x86-64; other platforms are not yet validated.
+Validated locally on Linux x86-64. Maintained CI runs the full suite on native
+Linux x86-64 and ARM64; see the [validation evidence](docs/VALIDATION.md).
+Other platforms are not yet validated.
 
 Distinct durations, monotonic samples and Unix timestamps, checked integer
 arithmetic, nanosecond precision, and Gregorian UTC dates in years 0001..9999.
