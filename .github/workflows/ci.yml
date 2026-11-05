@@ -6,16 +6,48 @@ permissions:
   contents: read
 jobs:
   test:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: test
+            runner: ubuntu-24.04
+            arch: x86_64
+          - name: linux-arm64
+            runner: ubuntu-24.04-arm
+            arch: aarch64
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+      - name: Verify native Linux architecture and record tools
+        env:
+          EXPECTED_ARCH: ${{ matrix.arch }}
+        run: |
+          test "$(uname -s)" = Linux
+          test "$(uname -m)" = "$EXPECTED_ARCH"
+          test "$(getconf LONG_BIT)" = 64
+          uname -a
+          cat /etc/os-release
+          lscpu
+          gcc --version
+          gcc -dumpmachine
+          g++ --version
+          clang --version
+          clang -dumpmachine
+          cmake --version
+          python3 --version
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .toolchain
-          key: goose-${{ runner.os }}-${{ hashFiles('GOOSE_REVISION', 'scripts/setup-goose.sh') }}
+          key: goose-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('GOOSE_REVISION', 'scripts/setup-goose.sh') }}
       - run: make setup
+      - name: Verify compiler source identity and record runtime
+        run: |
+          test "$(git -C .toolchain/goose rev-parse HEAD)" = "$(cat GOOSE_REVISION)"
+          .toolchain/goose/build/goose version
       - run: make check test test-debug differential test-portable fuzz test-calendar
       - run: make bench BENCH_ITERATIONS=100
