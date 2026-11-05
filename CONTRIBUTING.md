@@ -1,21 +1,21 @@
 # Contributing
 
-Keep the interface small, pure and explicit. Prefer straightforward checked
-integer arithmetic and bounded byte operations. Applications own clocks, I/O,
-timezone and scheduling policy. Never trade validation or ownership for speed.
+Keep the public API small. Use checked integer arithmetic and bounded byte
+access. Applications own clocks, I/O, timezone and scheduling policy. Do not
+trade input validation or ownership checks for speed.
 
-Use focused branches (`feat/...`, `fix/...`, `docs/...`) and Conventional Commits:
-imperative subjects, one coherent change per commit. No compatibility promise
-before 1.0. Tag only independently reviewed releases.
+Use focused branches and Conventional Commits with imperative subjects. Keep
+each commit to one coherent change. Do not commit credentials, generated
+compiler output or private coordination notes. Releases need independent review;
+there is no compatibility promise before 1.0.
 
-Behavior changes need meaningful public-interface regressions for malformed
-input and range edges. Run `make format`, `make check test test-debug`,
-`make differential fuzz`, `make test-portable`, and `git diff --check`. Request
-independent reviews, fix actionable findings, and keep CI passing. Compiler
-changes require a reviewed full upstream commit and full validation. Never
-commit credentials, generated compiler output, or private coordination notes.
+Behavior changes need public-interface tests for valid input, errors and range
+boundaries. Format with `make format`, run the [validation commands](docs/VALIDATION.md),
+and check `git diff --check`. Calendar changes must pass both full-calendar
+sweeps. Compiler updates need a reviewed full upstream commit and validation on
+each maintained platform. Address review findings and keep CI passing.
 
-Profile before optimizing. Run `make bench`; keep raw samples with source,
-compiler, flags, platform and CPU provenance. Report all fixtures and regressions;
-CI checks benchmark execution, never timing thresholds. Microbenchmarks do not
-establish a universal ranking.
+Profile before optimizing. Follow the [measurement method](bench/README.md),
+retain every raw result, and record source/toolchain identities and the machine.
+Include slower results and dispersion. CI benchmark smoke checks execution;
+it does not establish performance or enforce a timing threshold.

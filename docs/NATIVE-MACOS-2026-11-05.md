@@ -86,4 +86,5 @@ The record covers the observed hosted macOS ARM64 environment and compilers.
 It is not a guarantee for other macOS versions, Intel Macs, Windows, arbitrary
 toolchains, allocator failures, or exhaustive malformed input. Historical Linux
 performance measurements remain scoped to their original machines. The v0.1.0
-tag remains unchanged; no new release tag or runtime dependency was introduced.
+tag remains unchanged. That tested CI change introduced no release tag or runtime
+dependency; it was later included in v0.1.1.

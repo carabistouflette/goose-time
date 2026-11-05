@@ -1,110 +1,99 @@
-# Validation evidence
+# Validation
 
-Production source: bcbe9ea (the performance commit), after the reviewed internal
-namespace split and month-prefix optimization. Documentation and validation-target
-changes after that commit do not change either production source file.
+The current release, [v0.1.1](https://github.com/carabistouflette/goose-time/releases/tag/v0.1.1),
+contains source commit `7c3f93cb8b398476c8ef88afe90204711ee26951`.
+Its tree equals the tested release candidate `7cb7e23ae52696ef47fc4d087214aeefee741dcb`.
+All three native platforms passed in both candidate runs:
 
-Validated locally on Linux x86-64 with Goose revision
-`eadca409f68210893f366e60d0c2f0dc29a339be` (runtime `3025e5810379`),
-GCC 16.2.1 20260810 and Clang 23.1.4. The compiler checkout's full identity was
-verified against GOOSE_REVISION. Initial local validation reused an existing
-exact-pin compiler and did not include fresh compiler bootstrap or hosted CI.
-The maintained [CI workflow](https://github.com/carabistouflette/goose-time/actions/workflows/ci.yml)
-bootstraps that exact revision and runs the validation targets without timing
-thresholds. Publication requires successful CI on the exact release commit;
-initial v0.1.0 publication evidence is linked in its
-[release notes](https://github.com/carabistouflette/goose-time/releases/tag/v0.1.0).
-Later releases record their own exact candidate CI and archive verification in
-their release notes; the platform records below retain their original source
-identities.
+| Platform | Candidate checks | Earlier platform record |
+| --- | --- | --- |
+| Linux x86-64 | [Push](https://github.com/carabistouflette/goose-time/actions/runs/42082297138), [PR](https://github.com/carabistouflette/goose-time/actions/runs/42082639437) | [Linux tools and results](NATIVE-LINUX-2026-11-05.md) |
+| Linux ARM64 | Same two runs, `linux-arm64` job | [Linux tools and results](NATIVE-LINUX-2026-11-05.md) |
+| macOS ARM64 | Same two runs, `macos-arm64` job | [macOS tools and results](NATIVE-MACOS-2026-11-05.md) |
 
-## Native Linux CI
+The release notes link archive and Git-import acceptance details. The earlier
+platform records retain their original commits, job links and observed tools;
+they do not describe later CI runs. Current main-branch results are available in
+the [CI workflow](https://github.com/carabistouflette/goose-time/actions/workflows/ci.yml).
 
-The maintained workflow runs the same full validation targets on
-`ubuntu-24.04` (x86-64) and `ubuntu-24.04-arm` (ARM64). Each job checks its actual
-Linux architecture and 64-bit process environment, records OS/CPU/compiler tools,
-bootstraps the pinned compiler, and verifies the full compiler checkout identity.
-Compiler caches include OS and architecture to keep native executables separate.
+## What is checked
 
-Both jobs run contract and consumer-formatting regressions, normal/debug
-runner and executable modes, Python differential and byte-mutation oracles,
-GCC/Clang standalone debug tests, the complete Gregorian calendar enumeration,
-and a benchmark correctness smoke. They use the same inputs and case counts;
-there is no emulation or timing threshold in the workflow. The first hosted runs
-passed on both architectures; [the recorded evidence](NATIVE-LINUX-2026-11-05.md)
-links all four exact jobs and identifies their source, toolchain and workloads.
-A configured runner alone is not evidence of a passed validation suite.
+Each platform uses Goose source revision
+`eadca409f68210893f366e60d0c2f0dc29a339be` (runtime `3025e5810379`).
+CI builds or restores that compiler, verifies its full checkout identity, and
+records the actual architecture, OS and compiler versions. Caches separate OS
+and architecture. These are native runs, without emulation.
 
-This CI addition preserves the production sources, API and compiler pin from
-v0.1.0. It does not move that release tag or extend the historical local x86-64
-measurements below to ARM64. Those Linux runs make no cross-architecture
-performance ranking or Windows/macOS validation claim.
+- Formatting and type checks, example execution, and public API regressions.
+  Cases cover signed integer endpoints, subtraction of `i64.min`, invalid fields,
+  offsets/fractions, calendar boundaries and unchanged output on formatter errors.
+  A consumer test also supplies competing formatting overloads.
+- Normal/debug runners and executables, plus GCC/Clang standalone debug builds.
+- An independent Python datetime/integer oracle: 21,390 deterministic cases per
+  mode, seed 3339, across all six modes. Expected timestamps use integer arithmetic.
+- An independent Python regex/datetime parser oracle: 78,274 cases, seed 882,
+  under standalone debug Clang. It substitutes bytes and truncates four fixtures,
+  then adds 50,000 arbitrary byte strings. Hex transport preserves NUL and non-ASCII.
+- Full calendar enumeration under both GCC and Clang: all 3,652,059 days in
+  years 0001..9999, with expected seconds advancing independently by one day.
+  Normal regressions also cover a 146,097-day Gregorian cycle with fractions.
+- Execution and checksum checks for all nine benchmark fixtures. CI does not
+  enforce timing thresholds or establish platform performance comparisons.
 
-## Native macOS ARM64 CI
+The release's production files and compiler pin are unchanged from v0.1.0.
+The [benchmark currentness record](../bench/CURRENTNESS.md) compares those source
+identities with the historical measured implementation.
 
-Native macOS ARM64 CI passed in both initial hosted runs; the
-[recorded macOS evidence](NATIVE-MACOS-2026-11-05.md) links the exact jobs,
-checkout identities, observed tools and results. That job checks Darwin and
-`arm64`, records macOS/Xcode/SDK/compiler versions, and uses the same full
-test targets and input counts as Linux. Standalone compiler selection is explicit:
-`GCC_CC` is the resolved absolute path of `gcc-15` and
-`CLANG_CC=/usr/bin/clang`; the GCC predefines check rejects a Clang alias.
-Compiler bootstrap, default generated executables and benchmark
-smoke use Apple Clang. No production sources, API or compiler pin are changed,
-and the v0.1.0 tag remains unchanged.
+## Run the checks
 
-## Performed checks
-
-The historical checks below describe Linux evidence.
-
-- Format/type checks and example execution.
-- Public-interface regression and hostile consumer-formatting tests in normal
-  and debug runner/executable modes. Checks include i64 endpoints, subtraction
-  of i64.min, invalid public fields, cancellation before multiplication overflow,
-  atomic formatter rejection, offsets/fractions, and Gregorian boundaries.
-- GCC and Clang standalone debug executables for both regression files.
-- Independent Python datetime/integer oracle: 21,390 deterministic cases,
-  seed 3339. Normal/debug runner, normal/debug executable, plus standalone
-  debug executables under GCC and Clang. No float Unix timestamps.
-- Independent Python regex/datetime parser oracle: 78,274 deterministic cases,
-  seed 882, Clang standalone debug. Exhaustive byte substitutions and truncations
-  of four fixture strings plus 50,000 arbitrary byte strings, safely transported
-  as hex so NUL, line endings and non-ASCII reach the real public parser.
-- Full 3,652,059-day calendar enumeration in years 0001..9999, GCC and Clang
-  standalone debug. Expected seconds advance by one day independently of the
-  library conversion algorithm. Normal regressions also cover one full
-  146,097-day Gregorian cycle with fractional end-of-day timestamps.
-- Benchmark smoke, Python syntax compilation, and `git diff --check`.
-- Measurement-tool rejection of nonempty output directory, preserving the
-  previous file bytes; benchmark checksums consume all formatted output bytes.
-- Fresh local clone at bcbe9ea: format/type checks, normal/debug regression
-  modes, GCC/Clang standalone regressions and differential cases, parser mutation
-  corpus, full calendar enumeration and benchmark smoke all passed without any
-  dependency on sibling library sources. It used the existing exact-pin compiler.
-
-Three independent reviewers challenged design, arithmetic/bounds, test coverage,
-and measurement quality across several checkpoints. Actionable findings were
-addressed: unchecked helpers moved to unsupported time_detail, benchmark output
-reuse rejected, and all formatted bytes included in benchmark checksums. The
-profiled month-table change received a separate full-calendar review/check.
-
-## Reproduce
-
-From a standalone checkout, run `make setup`, then:
+A standalone checkout needs the [quickstart prerequisites](../README.md#try-it),
+Python 3, GNU GCC and Clang. On Linux, the defaults are `gcc` and `clang`:
 
 ```sh
+make setup
 make check test test-debug differential test-portable fuzz test-calendar
 make bench BENCH_ITERATIONS=100
+git diff --check
 ```
 
-To reuse an exact-pin compiler, pass `GOOSE=/absolute/path/to/goose` to make.
-`make differential` runs all four runner/executable modes; `test-portable` adds
-GCC/Clang standalone differential coverage. Fuzz seeds and input/expected/actual
-TSV files are retained under .build. No generated executables are tracked.
+To reuse a compiler, pass `GOOSE=/absolute/path/to/goose` to make after verifying
+its source checkout matches `GOOSE_REVISION`. `make check` checks formatting and
+types; `make test` also runs a ten-iteration benchmark smoke. `make differential`
+runs four runner/executable modes; `test-portable` adds both standalone compilers.
+Generated programs and oracle inputs/results stay under `.build`.
 
-The [measured optimization](../bench/results/month-prefix/README.md) retains all
-raw batches, source hashes, platform/compiler provenance, and the original
-sampling profile. Measurements are not latency guarantees. No exhaustive proof
-of arbitrary malformed input, allocator failure recovery, or validation on
-Windows/macOS/other architectures beyond the recorded evidence is claimed. This
-core contains no native code.
+On macOS, install GNU GCC 15 as well as the Apple command-line tools. Select
+compilers explicitly before the commands above:
+
+```sh
+export CC=/usr/bin/clang CXX=/usr/bin/clang++ GOOSE_CC=/usr/bin/clang
+export GCC_CC="$(command -v gcc-15)" CLANG_CC=/usr/bin/clang
+export BENCH_CC=/usr/bin/clang
+test -x "$GCC_CC"
+```
+
+The pinned Goose accepts built-in compiler names or absolute paths, so resolve
+`gcc-15` rather than passing that bare name. CI checks that it is GNU GCC, not a
+Clang alias. See the macOS record for the observed SDK and tool versions.
+
+## Documentation examples
+
+The current README's examples were checked against the published v0.1.1 source
+above using a clean checkout of the pinned compiler. A fresh public tag clone's
+`examples/timestamps.goose` printed `2026-11-04T17:31:30.125Z`. The README's
+exact-commit Git import printed `2026-11-04T17:30:00.125Z` in normal and debug
+runners, starting with an empty package cache. Formatting and type checks also passed.
+
+These local checks reused an already built compiler. The unchanged `make setup`
+bootstrap is covered by the recorded release CI; it was not rebuilt locally for
+this prose update. No new performance measurements were made.
+
+## Scope
+
+These results cover the recorded native Linux x86-64/ARM64 and macOS ARM64
+environments. Windows, Intel Macs and other toolchains remain unvalidated.
+Tests do not prove correctness for every malformed byte string or cover
+allocator failure recovery. The library contains no native code.
+
+[Historical measurements](../bench/results/month-prefix/README.md) remain scoped
+to their original Linux x86-64 machine. They are not latency guarantees.

@@ -14,7 +14,7 @@ fn main() {
     assert(time::append_rfc3339(out, later) == time::Error.None);
     assert(out == "2026-11-04T17:31:30.125Z");
     print(out);
-    // Applications acquire clocks. Tests inject fixed samples instead.
+    // Applications supply clocks; nanosecond storage does not guarantee clock resolution.
     let started = time::Instant { clock_ns() };
     let now = time::from_unix_nanoseconds(time_ns());
     let elapsed, error = time::difference(time::Instant { clock_ns() }, started);
