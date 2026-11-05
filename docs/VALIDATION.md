@@ -27,9 +27,11 @@ Both jobs run contract and consumer-formatting regressions, normal/debug
 runner and executable modes, Python differential and byte-mutation oracles,
 GCC/Clang standalone debug tests, the complete Gregorian calendar enumeration,
 and a benchmark correctness smoke. They use the same inputs and case counts;
-there is no emulation or timing threshold in the workflow. Actual hosted outcomes
-and tool versions are recorded in the linked Actions runs. A configured runner
-alone is not evidence of a passed validation suite.
+there is no emulation or timing threshold in the workflow. Hosted ARM64 evidence
+for this change is pending; actual outcomes and tool versions must be checked in
+the Actions logs. Immutable run/job links and results must be recorded before
+claiming completed ARM64 validation. A configured runner alone is not evidence
+of a passed validation suite.
 
 This CI addition preserves the production sources, API and compiler pin from
 v0.1.0. It does not move that release tag or extend the historical local x86-64
@@ -87,5 +89,5 @@ The [measured optimization](../bench/results/month-prefix/README.md) retains all
 raw batches, source hashes, platform/compiler provenance, and the original
 sampling profile. Measurements are not latency guarantees. No exhaustive proof
 of arbitrary malformed input, allocator failure recovery, or validation on
-Windows/macOS/architectures outside the native Linux CI matrix is claimed. This
+Windows/macOS/other architectures beyond the recorded evidence is claimed. This
 core contains no native code.
