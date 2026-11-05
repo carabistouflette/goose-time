@@ -2,20 +2,19 @@
 
 ## Unreleased
 
+- Simplify the quickstart, API and validation docs; distinguish the tagged
+  release from main and document the historical benchmark's source match and limits.
+
 ## 0.1.1 — 2026-11-05 (experimental maintenance release)
 
-Runtime and public API are byte-identical to v0.1.0. This release packages
-recorded native Linux x86-64/ARM64 and macOS ARM64 validation, explicit test
-compiler selection and portability documentation. The v0.1.0 tag stays frozen.
+Runtime, public API and compiler pin are unchanged from v0.1.0. This release adds
+platform validation and documentation; the v0.1.0 tag stays frozen.
 
-- Add native macOS ARM64 CI with explicit GNU GCC/Apple Clang compiler selection
-  and the existing full validation workload. Record the passed hosted jobs and
-  their compiler/platform provenance; production sources, API, compiler pin and
-  the v0.1.0 tag is unchanged.
+- Add native macOS ARM64 CI with explicit GNU GCC/Apple Clang selection and
+  record its tools and results.
 
-- Run the full maintained validation suite on native Linux ARM64 alongside
-  x86-64, with architecture checks, compiler provenance and architecture-specific
-  caches. Production sources, API, compiler pin and the v0.1.0 tag are unchanged.
+- Run the full suite on native Linux ARM64 alongside x86-64, with architecture
+  checks, recorded tools and separate compiler caches.
 
 ## 0.1.0 — experimental
 

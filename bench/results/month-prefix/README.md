@@ -1,19 +1,30 @@
-# Month prefix measurement
+# Historical month-prefix measurement
 
-Seven sequential batches per version, 1,000,000 iterations per fixture, one
-warmup batch; same revised harness checksums every formatted byte. Baseline is
-library source at 1ccea5a with the revised benchmark harness, optimized version
-adds the validated 12-entry month prefix table and leap adjustment. Source hashes
-and dirty status in each metadata file identify the measured content exactly.
-The captures preceded the final performance commit; metadata does not claim a
-later commit identity. Native GCC -O2, exact pinned Goose compiler, Linux x86-64;
-full CPU/compiler/flags/platform details accompany each capture.
+Captured November 4, 2026 on an Intel Core Ultra 7 258V, Linux
+7.2.11-arch1-1 x86-64 with glibc 2.44, GCC 16.2.1 20260810 at `-O2`, and Goose
+`eadca40` (runtime `3025e5810379`). See the [source/toolchain check](../../CURRENTNESS.md)
+for the full compiler pin, the source match to v0.1.1 and the missing historical
+binary identities. These are historical results for that machine and workload.
 
-The pre-change `perf record -e cycles:u` profile attributed 14.70% of mixed batch
-samples to from_calendar. That profile used the earlier formatter checksum and
-2,000,000 iterations; it identifies a candidate, not a matched timing comparison.
-The table below uses only revised-harness captures. Values are median [min,max]
-ns/op across all seven batches. Checksum/assertion/loop costs are included.
+Each version used one discarded warmup batch followed by seven retained batches
+of 1,000,000 iterations per fixture. Baseline batches ran first, then optimized
+batches; they were not randomized or alternated. No CPU affinity or controlled
+host load was recorded. Both use the same revised harness, which checksums every
+formatted byte. The baseline production source matches `1ccea5a`; the optimized
+version adds the 12-entry month-start table and leap adjustment. Captures preceded
+the final performance commit: source hashes and dirty status identify measured
+content rather than claiming that later commit was already checked out.
+
+The retained [pre-change profile](baseline/profile.txt) attributes 14.70% of samples
+to `from_calendar`. The original report described `perf record -e cycles:u`, an
+earlier formatter checksum and 2,000,000 iterations. The profile lacks its own
+source, command and executable identity, so those details cannot be independently
+recovered from it. It was an investigation hint and is excluded from the table.
+
+The table uses only the matched revised-harness captures. Values are median
+[min,max] ns/op across all seven batches: whole-batch monotonic nanoseconds
+divided by iterations, including checksum/assertion/loop costs. Fresh formatting
+includes buffer allocation/destruction; reused formatting excludes initial growth.
 
 | Fixture | Baseline ns/op | Prefix ns/op |
 | --- | ---: | ---: |
@@ -27,7 +38,13 @@ ns/op across all seven batches. Checksum/assertion/loop costs are included.
 | format_reused | 237.55 [236.84, 249.81] | 245.80 [240.28, 261.94] |
 | format_fresh | 240.42 [237.04, 252.97] | 244.89 [238.96, 260.17] |
 
-Calendar-dependent parsing and roundtrip fixtures justify the small table. Keep
-all fixtures visible, including unchanged-path variation. Sequential microbenchmarks
-on a shared machine cannot separate code layout, clock/thermal and scheduler noise.
-No universal speed ranking, CI timing threshold, or performance guarantee is made.
+Four medians decreased and five increased. Every fixture is retained, including
+slower rejection, duration and formatting results. Sequential microbenchmarks on
+a shared machine cannot separate code layout, clock/thermal and scheduler effects;
+these samples do not establish the cause of changes on unchanged code paths.
+They do not establish a universal speed ranking or a performance guarantee.
+
+The [baseline metadata](baseline/metadata.json) and [optimized metadata](optimized/metadata.json)
+record flags, source hashes and reported tools; their adjacent `run-1.csv` through
+`run-7.csv` files retain every raw sample. The [recorder instructions](../../README.md)
+show the protocol and compiler selection. CI checks execution, without timing thresholds.
